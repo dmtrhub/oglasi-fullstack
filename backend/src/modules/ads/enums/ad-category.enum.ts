@@ -7,5 +7,6 @@ export enum AdCategory {
   PETS = 'pets',
   GAMES = 'games',
   BOOKS = 'books',
-  TECHNOLOGY = 'technology'
+  TECHNOLOGY = 'technology',
+  OTHER = 'other'
 }

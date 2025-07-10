@@ -1,4 +1,4 @@
-import { Entity, Column, PrimaryGeneratedColumn, ManyToOne, CreateDateColumn } from 'typeorm';
+import { Entity, Column, PrimaryGeneratedColumn, ManyToOne, CreateDateColumn, JoinColumn } from 'typeorm';
 import { User } from '../users/user.entity';
 import { AdCategory } from './enums/ad-category.enum';
 
@@ -16,16 +16,18 @@ export class Ad {
   @Column()
   imageUrl: string;
 
-  @Column('decimal')
+  @Column('decimal', { precision: 10, scale: 2 })
   price: number;
 
   @Column({
-  type: 'enum',
-  enum: AdCategory,
+    type: 'enum',
+    enum: AdCategory,
+    default: AdCategory.OTHER
   })
   category: AdCategory;
 
   @ManyToOne(() => User, user => user.ads, { eager: true }) // auto loading users
+  @JoinColumn({ name: 'userId' })
   user: User;
 
   @Column()
