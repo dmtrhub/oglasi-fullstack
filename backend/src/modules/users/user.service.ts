@@ -4,6 +4,7 @@ import { Repository } from 'typeorm';
 import { User } from './user.entity';
 import { CreateUserDto } from './dto/create-user.dto';
 import * as bcrypt from 'bcrypt';
+import { UUID } from 'crypto';
 
 @Injectable()
 export class UserService {
@@ -21,6 +22,16 @@ export class UserService {
 
     if (!user) {
         throw new NotFoundException(`User '${username}' not found`);
+    }
+
+    return user;
+  }
+
+  async findOneById(id: string): Promise<User> {
+    const user = await this.usersRepository.findOne({ where: { id } });
+
+    if (!user) {
+        throw new NotFoundException(`User with ID '${id}' not found`);
     }
 
     return user;
