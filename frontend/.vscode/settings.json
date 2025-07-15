@@ -1,0 +1,22 @@
+{
+  "editor.formatOnSave": true,
+  "editor.defaultFormatter": "esbenp.prettier-vscode",
+  "editor.tabSize": 2,
+  "tailwindCSS.includeLanguages": {
+    "typescript": "css",
+    "typescriptreact": "css"
+  },
+  "typescript.updateImportsOnFileMove.enabled": "always",
+  "eslint.validate": ["typescript", "typescriptreact"],
+  "files.autoSave": "onFocusChange",
+  "javascript.format.enable": true,
+  "typescript.format.enable": true,
+  "prettier.singleQuote": true,
+  "prettier.jsxSingleQuote": true,
+  "prettier.trailingComma": "es5",
+  "workbench.colorTheme": "Default Dark Modern",
+  "emmet.includeLanguages": {
+    "javascript": "javascriptreact",
+    "typescript": "typescriptreact"
+  }
+}
