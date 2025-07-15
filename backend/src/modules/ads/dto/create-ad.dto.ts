@@ -1,5 +1,12 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsEnum, IsNotEmpty, IsString, IsNumber, IsUrl, IsPositive } from 'class-validator';
+import {
+  IsEnum,
+  IsNotEmpty,
+  IsString,
+  IsNumber,
+  IsUrl,
+  IsPositive,
+} from 'class-validator';
 import { Transform } from 'class-transformer';
 import { AdCategory } from '../enums/ad-category.enum';
 
@@ -7,7 +14,7 @@ export class CreateAdDto {
   @ApiProperty({
     example: 'iPhone 13 Pro',
     description: 'Title of the ad',
-    required: true
+    required: true,
   })
   @IsNotEmpty()
   @IsString()
@@ -16,7 +23,7 @@ export class CreateAdDto {
   @ApiProperty({
     example: 'Brand new iPhone in original packaging',
     description: 'Detailed description',
-    required: true
+    required: true,
   })
   @IsNotEmpty()
   @IsString()
@@ -25,7 +32,7 @@ export class CreateAdDto {
   @ApiProperty({
     example: 'https://example.com/phone.jpg',
     description: 'URL of the main image',
-    required: true
+    required: true,
   })
   @IsNotEmpty()
   @IsUrl()
@@ -35,7 +42,7 @@ export class CreateAdDto {
     example: 999.99,
     description: 'Price of the item',
     minimum: 0,
-    required: true
+    required: true,
   })
   @IsNotEmpty()
   @IsNumber()
@@ -46,17 +53,17 @@ export class CreateAdDto {
     enum: AdCategory,
     example: AdCategory.TECHNOLOGY,
     description: 'Category of the ad',
-    required: true
+    required: true,
   })
   @IsNotEmpty()
   @IsEnum(AdCategory)
-  @Transform(({ value }) => value?.toLowerCase())
+  @Transform(({ value }: { value: string }) => value?.toLowerCase())
   category: AdCategory;
 
   @ApiProperty({
     example: 'Belgrade',
     description: 'City where the item is located',
-    required: true
+    required: true,
   })
   @IsNotEmpty()
   @IsString()

@@ -1,4 +1,10 @@
-import { Entity, Column, PrimaryGeneratedColumn, CreateDateColumn, OneToMany } from 'typeorm';
+import {
+  Entity,
+  Column,
+  PrimaryGeneratedColumn,
+  CreateDateColumn,
+  OneToMany,
+} from 'typeorm';
 import { Ad } from '../ads/ad.entity';
 
 @Entity('users')
@@ -18,6 +24,6 @@ export class User {
   @Column()
   phone: string;
 
-  @OneToMany(() => Ad, ad => ad.user)
+  @OneToMany(() => Ad, (ad) => ad.user)
   ads: Ad[];
 }

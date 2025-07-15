@@ -1,6 +1,4 @@
 import { Module } from '@nestjs/common';
-import { AppController } from './app.controller';
-import { AppService } from './app.service';
 import { ConfigModule } from '@nestjs/config';
 import { DatabaseModule } from './database/database.module';
 import { UserModule } from './modules/users/user.module';
@@ -13,12 +11,12 @@ import { AdModule } from './modules/ads/ad.module';
       envFilePath: '../.env',
       isGlobal: true,
     }),
-    DatabaseModule, 
-    UserModule, 
+    DatabaseModule,
+    UserModule,
     AuthModule,
-    AdModule
+    AdModule,
   ],
-  controllers: [AppController],
-  providers: [AppService],
+  controllers: [],
+  providers: [],
 })
 export class AppModule {}

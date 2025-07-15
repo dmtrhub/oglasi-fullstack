@@ -5,7 +5,7 @@ export class CreateUserDto {
   @ApiProperty({
     example: 'john_doe',
     description: 'Unique username',
-    required: true
+    required: true,
   })
   @IsNotEmpty()
   @IsString()
@@ -15,7 +15,7 @@ export class CreateUserDto {
     example: 'password123',
     description: 'User password (min 6 characters)',
     minLength: 6,
-    required: true
+    required: true,
   })
   @IsNotEmpty()
   @MinLength(6)
@@ -24,7 +24,7 @@ export class CreateUserDto {
   @ApiProperty({
     example: '+381601234567',
     description: 'User phone number',
-    required: true
+    required: true,
   })
   @IsNotEmpty()
   @IsString()

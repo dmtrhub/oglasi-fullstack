@@ -1,4 +1,8 @@
-import { Injectable, NotFoundException, UnauthorizedException } from '@nestjs/common';
+import {
+  Injectable,
+  NotFoundException,
+  UnauthorizedException,
+} from '@nestjs/common';
 import { Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Ad } from './ad.entity';
@@ -15,12 +19,14 @@ export class AdService {
   constructor(
     @InjectRepository(Ad)
     private adsRepository: Repository<Ad>,
-    
     @InjectRepository(User)
     private userRepository: Repository<User>,
   ) {}
 
-  async create(createAdDto: CreateAdDto, userId: string): Promise<AdResponseDto> {
+  async create(
+    createAdDto: CreateAdDto,
+    userId: string,
+  ): Promise<AdResponseDto> {
     const user = await this.userRepository.findOneBy({ id: userId });
 
     if (!user) {
@@ -36,17 +42,8 @@ export class AdService {
     return this.mapToDto(savedAd);
   }
 
-  async findAll(
-  filterDto: GetAdsFilterDto,
-  ): Promise<PaginatedAdsResponseDto> {
-    const {
-      category,
-      title,
-      city,
-      minPrice,
-      maxPrice,
-      page = '1',
-    } = filterDto;
+  async findAll(filterDto: GetAdsFilterDto): Promise<PaginatedAdsResponseDto> {
+    const { category, title, city, minPrice, maxPrice, page = '1' } = filterDto;
 
     const take = 20;
     const currentPage = parseInt(page) || 1;
@@ -60,29 +57,30 @@ export class AdService {
     // Filtering
     if (category) query.andWhere('ad.category = :category', { category });
 
-    if (title) query.andWhere('LOWER(ad.title) LIKE :title', { 
-      title: `%${title.toLowerCase().trim()}%` 
-    });
+    if (title)
+      query.andWhere('LOWER(ad.title) LIKE :title', {
+        title: `%${title.toLowerCase().trim()}%`,
+      });
 
-    if (city) query.andWhere('LOWER(ad.city) LIKE :city', { 
-      city: `%${city.toLowerCase().trim()}%` 
-    });
+    if (city)
+      query.andWhere('LOWER(ad.city) LIKE :city', {
+        city: `%${city.toLowerCase().trim()}%`,
+      });
 
-    if (minPrice) query.andWhere('ad.price >= :minPrice', { 
-      minPrice: parseFloat(minPrice) 
-    });
-    if (maxPrice) query.andWhere('ad.price <= :maxPrice', { 
-      maxPrice: parseFloat(maxPrice) 
-    });
+    if (minPrice)
+      query.andWhere('ad.price >= :minPrice', {
+        minPrice: parseFloat(minPrice),
+      });
+    if (maxPrice)
+      query.andWhere('ad.price <= :maxPrice', {
+        maxPrice: parseFloat(maxPrice),
+      });
 
     // Pagination
-    const [ads, total] = await query
-      .offset(skip)
-      .limit(take)
-      .getManyAndCount();
+    const [ads, total] = await query.offset(skip).limit(take).getManyAndCount();
 
     return {
-      data: ads.map(ad => this.mapToDto(ad)),
+      data: ads.map((ad) => this.mapToDto(ad)),
       meta: {
         total,
         page: currentPage,
@@ -92,8 +90,8 @@ export class AdService {
   }
 
   async findMyAds(
-  filterDto: GetMyAdsDto,
-  userId: string,
+    filterDto: GetMyAdsDto,
+    userId: string,
   ): Promise<PaginatedAdsResponseDto> {
     const query = this.adsRepository
       .createQueryBuilder('ad')
@@ -102,37 +100,39 @@ export class AdService {
       .orderBy('ad.id', 'ASC');
 
     if (filterDto.category) {
-      query.andWhere('ad.category = :category', { 
-        category: filterDto.category 
+      query.andWhere('ad.category = :category', {
+        category: filterDto.category,
       });
     }
 
-    if (filterDto.title) query.andWhere('LOWER(ad.title) LIKE :title', { 
-      title: `%${filterDto.title.toLowerCase().trim()}%` 
-    });
+    if (filterDto.title)
+      query.andWhere('LOWER(ad.title) LIKE :title', {
+        title: `%${filterDto.title.toLowerCase().trim()}%`,
+      });
 
-    if (filterDto.city) query.andWhere('LOWER(ad.city) LIKE :city', { 
-      city: `%${filterDto.city.toLowerCase().trim()}%` 
-    });
+    if (filterDto.city)
+      query.andWhere('LOWER(ad.city) LIKE :city', {
+        city: `%${filterDto.city.toLowerCase().trim()}%`,
+      });
 
-    if (filterDto.minPrice) query.andWhere('ad.price >= :minPrice', { 
-      minPrice: parseFloat(filterDto.minPrice) 
-    });
-    if (filterDto.maxPrice) query.andWhere('ad.price <= :maxPrice', { 
-      maxPrice: parseFloat(filterDto.maxPrice) 
-    });
+    if (filterDto.minPrice) {
+      query.andWhere('ad.price >= :minPrice', {
+        minPrice: parseFloat(filterDto.minPrice),
+      });
+    }
+    if (filterDto.maxPrice)
+      query.andWhere('ad.price <= :maxPrice', {
+        maxPrice: parseFloat(filterDto.maxPrice),
+      });
 
     const take = 20;
     const currentPage = parseInt(filterDto.page || '1');
     const skip = (currentPage - 1) * take;
 
-    const [ads, total] = await query
-      .skip(skip)
-      .take(take)
-      .getManyAndCount();
+    const [ads, total] = await query.skip(skip).take(take).getManyAndCount();
 
     return {
-      data: ads.map(ad => this.mapToDto(ad)),
+      data: ads.map((ad) => this.mapToDto(ad)),
       meta: {
         total,
         page: currentPage,
@@ -140,7 +140,6 @@ export class AdService {
       },
     };
   }
-
 
   async findOne(id: string): Promise<AdResponseDto> {
     const ad = await this.adsRepository.findOne({
@@ -161,7 +160,7 @@ export class AdService {
       relations: ['user'],
     });
 
-    return ads.map(ad => this.mapToDto(ad));
+    return ads.map((ad) => this.mapToDto(ad));
   }
 
   async update(

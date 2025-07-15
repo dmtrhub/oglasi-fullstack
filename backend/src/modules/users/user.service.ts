@@ -13,14 +13,14 @@ export class UserService {
     private usersRepository: Repository<User>,
   ) {}
 
-  private mapToDto(user: User): UserResponseDto {
+  private mapToDto = (user: User): UserResponseDto => {
     return {
       id: user.id,
       username: user.username,
       registeredAt: user.registeredAt,
-      phone: user.phone
+      phone: user.phone,
     };
-  }
+  };
 
   async findAll(): Promise<UserResponseDto[]> {
     const users = await this.usersRepository.find();
@@ -36,9 +36,9 @@ export class UserService {
   }
 
   async findOneForAuth(username: string) {
-    return this.usersRepository.findOne({ 
+    return this.usersRepository.findOne({
       where: { username },
-      select: ['id', 'username', 'password'] // explicitly include password
+      select: ['id', 'username', 'password'], // explicitly include password
     });
   }
 

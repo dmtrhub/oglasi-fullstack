@@ -7,7 +7,12 @@ import { AdCategory } from '../modules/ads/enums/ad-category.enum';
 import * as dotenv from 'dotenv';
 dotenv.config();
 
-if (!process.env.DB_HOST || !process.env.DB_PASSWORD || !process.env.DB_USERNAME || !process.env.DB_NAME) {
+if (
+  !process.env.DB_HOST ||
+  !process.env.DB_PASSWORD ||
+  !process.env.DB_USERNAME ||
+  !process.env.DB_NAME
+) {
   throw new Error('Missing DB environment variables!');
 }
 
@@ -71,7 +76,9 @@ async function seed() {
       title: faker.commerce.productName(),
       description: faker.commerce.productDescription(),
       price: parseFloat(faker.commerce.price({ min: 500, max: 50000 })),
-      category: faker.helpers.arrayElement(Object.values(AdCategory)) as AdCategory,
+      category: faker.helpers.arrayElement(
+        Object.values(AdCategory),
+      ) as AdCategory,
       city: faker.location.city(),
       imageUrl: faker.image.url(),
       user: faker.helpers.arrayElement(users),
@@ -87,5 +94,5 @@ async function seed() {
 
 seed().catch((err) => {
   console.error('Seeding error:', err);
-  AppDataSource.destroy();
+  void AppDataSource.destroy();
 });

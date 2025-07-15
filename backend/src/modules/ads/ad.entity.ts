@@ -1,4 +1,11 @@
-import { Entity, Column, PrimaryGeneratedColumn, ManyToOne, CreateDateColumn, JoinColumn } from 'typeorm';
+import {
+  Entity,
+  Column,
+  PrimaryGeneratedColumn,
+  ManyToOne,
+  CreateDateColumn,
+  JoinColumn,
+} from 'typeorm';
 import { User } from '../users/user.entity';
 import { AdCategory } from './enums/ad-category.enum';
 
@@ -22,11 +29,11 @@ export class Ad {
   @Column({
     type: 'enum',
     enum: AdCategory,
-    default: AdCategory.OTHER
+    default: AdCategory.OTHER,
   })
   category: AdCategory;
 
-  @ManyToOne(() => User, user => user.ads, { eager: true }) // auto loading users
+  @ManyToOne(() => User, (user) => user.ads, { eager: true }) // auto loading users
   @JoinColumn({ name: 'userId' })
   user: User;
 
@@ -36,5 +43,3 @@ export class Ad {
   @CreateDateColumn()
   createdAt: Date;
 }
-
-

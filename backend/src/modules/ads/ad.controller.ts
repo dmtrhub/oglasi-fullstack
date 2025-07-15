@@ -8,9 +8,7 @@ import {
   Param,
   Query,
   UseGuards,
-  applyDecorators,
   Request,
-  UnauthorizedException
 } from '@nestjs/common';
 import { AdService } from './ad.service';
 import { CreateAdDto } from './dto/create-ad.dto';
@@ -20,8 +18,12 @@ import { GetAdsFilterDto } from './dto/get-ads-filter.dto';
 import { GetMyAdsDto } from './dto/get-my-ads.dto';
 import { JwtAuthGuard } from 'src/common/jwt-auth.guard';
 import { PaginatedAdsResponseDto } from './dto/paginated-ads-response.dto';
-import { ApiBearerAuth, ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
-
+import {
+  ApiBearerAuth,
+  ApiOperation,
+  ApiResponse,
+  ApiTags,
+} from '@nestjs/swagger';
 
 @ApiTags('Ads')
 @Controller('ads')
@@ -30,7 +32,7 @@ export class AdController {
 
   @Get()
   @ApiOperation({ summary: 'Get all ads with filtering and pagination' })
-  @ApiResponse({ 
+  @ApiResponse({
     status: 200,
     description: 'Paginated and filtered ads',
     type: PaginatedAdsResponseDto,
@@ -43,24 +45,24 @@ export class AdController {
 
   @Get('mine')
   @UseGuards(JwtAuthGuard)
-  @ApiBearerAuth()
+  @ApiBearerAuth('JWT-auth')
   @ApiOperation({ summary: 'Get current user ads with same filtering options' })
-  @ApiResponse({ 
+  @ApiResponse({
     status: 200,
     description: 'Paginated and filtered current user ads',
     type: PaginatedAdsResponseDto,
   })
   async findMyAds(
     @Query() filterDto: GetMyAdsDto,
-    @Request() req,
+    @Request() req: { user: { userId: string } },
   ): Promise<PaginatedAdsResponseDto> {
     return this.adService.findMyAds(filterDto, req.user.userId);
   }
 
   @Get(':id')
   @ApiOperation({ summary: 'Get ad by ID' })
-  @ApiResponse({ 
-    status: 200, 
+  @ApiResponse({
+    status: 200,
     description: 'The found ad',
     type: AdResponseDto,
   })
@@ -71,26 +73,26 @@ export class AdController {
 
   @Post()
   @UseGuards(JwtAuthGuard)
-  @ApiBearerAuth()
+  @ApiBearerAuth('JWT-auth')
   @ApiOperation({ summary: 'Create a new ad' })
-  @ApiResponse({ 
-    status: 201, 
+  @ApiResponse({
+    status: 201,
     description: 'The created ad',
     type: AdResponseDto,
   })
   create(
     @Body() createAdDto: CreateAdDto,
-    @Request() req,
+    @Request() req: { user: { userId: string } },
   ): Promise<AdResponseDto> {
     return this.adService.create(createAdDto, req.user.userId);
   }
 
   @Put(':id')
   @UseGuards(JwtAuthGuard)
-  @ApiBearerAuth()
+  @ApiBearerAuth('JWT-auth')
   @ApiOperation({ summary: 'Update an ad' })
-  @ApiResponse({ 
-    status: 200, 
+  @ApiResponse({
+    status: 200,
     description: 'The updated ad',
     type: AdResponseDto,
   })
@@ -99,22 +101,23 @@ export class AdController {
   update(
     @Param('id') id: string,
     @Body() updateAdDto: UpdateAdDto,
-    @Request() req,
+    @Request() req: { user: { userId: string } },
   ): Promise<AdResponseDto> {
     return this.adService.update(id, updateAdDto, req.user.userId);
   }
 
   @Delete(':id')
   @UseGuards(JwtAuthGuard)
-  @ApiBearerAuth()
+  @ApiBearerAuth('JWT-auth')
   @ApiOperation({ summary: 'Delete an ad' })
   @ApiResponse({ status: 200, description: 'Ad deleted' })
   @ApiResponse({ status: 404, description: 'Ad not found' })
   @ApiResponse({ status: 403, description: 'Not the owner of the ad' })
-  delete(
+  async delete(
     @Param('id') id: string,
-    @Request() req,
-  ): Promise<void> {
-    return this.adService.delete(id, req.user.userId);
+    @Request() req: { user: { userId: string } },
+  ): Promise<{ message: string }> {
+    await this.adService.delete(id, req.user.userId);
+    return { message: 'Ad deleted successfully' };
   }
 }

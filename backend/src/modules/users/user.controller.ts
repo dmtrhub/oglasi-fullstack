@@ -4,17 +4,17 @@ import { UserService } from './user.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UserResponseDto } from './dto/user-response.dto';
 
-@ApiTags('users')
+@ApiTags('Users')
 @Controller('users')
 export class UserController {
   constructor(private readonly userService: UserService) {}
 
   @Get()
   @ApiOperation({ summary: 'Get all users' })
-  @ApiResponse({ 
-    status: 200, 
+  @ApiResponse({
+    status: 200,
     description: 'List of all users',
-    type: [UserResponseDto]
+    type: [UserResponseDto],
   })
   findAll(): Promise<UserResponseDto[]> {
     return this.userService.findAll();
@@ -25,7 +25,7 @@ export class UserController {
   @ApiResponse({
     status: 200,
     description: 'The found user',
-    type: UserResponseDto
+    type: UserResponseDto,
   })
   @ApiResponse({ status: 404, description: 'User not found' })
   findOne(@Param('username') username: string): Promise<UserResponseDto> {
@@ -38,7 +38,7 @@ export class UserController {
   @ApiResponse({
     status: 201,
     description: 'The user has been successfully created',
-    type: UserResponseDto
+    type: UserResponseDto,
   })
   create(@Body() createUserDto: CreateUserDto): Promise<UserResponseDto> {
     return this.userService.create(createUserDto);

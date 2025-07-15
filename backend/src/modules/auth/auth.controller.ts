@@ -4,7 +4,7 @@ import { AuthService } from './auth.service';
 import { LoginUserDto } from '../users/dto/login-user.dto';
 import { AuthResponseDto } from './dto/auth-response.dto';
 
-@ApiTags('auth')
+@ApiTags('Auth')
 @Controller('auth')
 export class AuthController {
   constructor(private readonly authService: AuthService) {}
@@ -15,7 +15,7 @@ export class AuthController {
   @ApiResponse({
     status: 200,
     description: 'Successful login',
-    type: AuthResponseDto
+    type: AuthResponseDto,
   })
   @ApiResponse({ status: 401, description: 'Invalid credentials' })
   @ApiResponse({ status: 404, description: 'User not found' })

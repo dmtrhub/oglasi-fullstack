@@ -8,5 +8,5 @@ export enum AdCategory {
   GAMES = 'games',
   BOOKS = 'books',
   TECHNOLOGY = 'technology',
-  OTHER = 'other'
+  OTHER = 'other',
 }

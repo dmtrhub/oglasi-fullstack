@@ -5,7 +5,7 @@ export class LoginUserDto {
   @ApiProperty({
     example: 'john_doe',
     description: 'Username',
-    required: true
+    required: true,
   })
   @IsNotEmpty()
   @IsString()
@@ -14,7 +14,7 @@ export class LoginUserDto {
   @ApiProperty({
     example: 'password123',
     description: 'User password',
-    required: true
+    required: true,
   })
   @IsNotEmpty()
   @IsString()

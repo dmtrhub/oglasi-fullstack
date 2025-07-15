@@ -1,12 +1,19 @@
 import { ApiPropertyOptional } from '@nestjs/swagger';
-import { IsOptional, IsString, IsUrl, IsNumber, Min, IsEnum } from 'class-validator';
+import {
+  IsOptional,
+  IsString,
+  IsUrl,
+  IsNumber,
+  Min,
+  IsEnum,
+} from 'class-validator';
 import { Transform } from 'class-transformer';
 import { AdCategory } from '../enums/ad-category.enum';
 
 export class UpdateAdDto {
   @ApiPropertyOptional({
     example: 'iPhone 13 Pro Max',
-    description: 'Updated title of the ad'
+    description: 'Updated title of the ad',
   })
   @IsOptional()
   @IsString()
@@ -14,7 +21,7 @@ export class UpdateAdDto {
 
   @ApiPropertyOptional({
     example: 'Brand new, never opened',
-    description: 'Updated description'
+    description: 'Updated description',
   })
   @IsOptional()
   @IsString()
@@ -22,7 +29,7 @@ export class UpdateAdDto {
 
   @ApiPropertyOptional({
     example: 'https://example.com/new-image.jpg',
-    description: 'Updated image URL'
+    description: 'Updated image URL',
   })
   @IsOptional()
   @IsUrl()
@@ -31,7 +38,7 @@ export class UpdateAdDto {
   @ApiPropertyOptional({
     example: 1099.99,
     description: 'Updated price',
-    minimum: 0
+    minimum: 0,
   })
   @IsOptional()
   @IsNumber()
@@ -41,16 +48,18 @@ export class UpdateAdDto {
   @ApiPropertyOptional({
     enum: AdCategory,
     example: AdCategory.SPORTS,
-    description: 'Updated category'
+    description: 'Updated category',
   })
   @IsOptional()
-  @Transform(({ value }) => value?.toLowerCase())
+  @Transform(({ value }: { value: unknown }) =>
+    typeof value === 'string' ? value.toLowerCase() : value,
+  )
   @IsEnum(AdCategory)
   category?: AdCategory;
 
   @ApiPropertyOptional({
     example: 'Novi Sad',
-    description: 'Updated city location'
+    description: 'Updated city location',
   })
   @IsOptional()
   @IsString()
