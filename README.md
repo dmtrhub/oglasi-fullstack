@@ -36,19 +36,19 @@ cd oglasi-fullstack
 2. **Kopiraj .env.example u .env:**
 
 ```bash
-$ cp backend/.env.example backend/.env
+cp backend/.env.example backend/.env
 ```
 
 3. **Pokreni sve servise:**
 
 ```bash
-$ docker-compose up -d
+docker-compose up -d
 ```
 
 4. **Napuni bazu podacima (Seed):** // Svaki put briše stare i dodaje novih 100 oglasa + 10 korisnika
 
 ```bash
-$ docker-compose run seed
+docker-compose run seed
 ```
 
 5. **Otvorite u browseru:**
