@@ -45,8 +45,8 @@ services:
     build: ./backend
     depends_on:
       - db
-    volumes:
-      - ./backend:/app
+    # volumes:
+    #  - ./backend:/app
     environment:
       DATABASE_URL: postgres://postgres:istorija8@db:5432/oglasi
     command: npm run seed
