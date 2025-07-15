@@ -1,0 +1,55 @@
+version: "3.8"
+
+services:
+  db:
+    image: postgres:17
+    restart: always
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: istorija8
+      POSTGRES_DB: oglasi
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    command: npm run start:dev
+    volumes:
+      - ./backend:/app
+      - /app/node_modules
+    ports:
+      - "3000:3000"
+    environment:
+      DATABASE_URL: postgres://postgres:istorija8@db:5432/oglasi
+    depends_on:
+      - db
+
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    command: npm run dev
+    volumes:
+      - ./frontend:/app
+      - /app/node_modules
+    ports:
+      - "3001:3000"
+    depends_on:
+      - backend
+  
+  seed:
+    build: ./backend
+    depends_on:
+      - db
+    volumes:
+      - ./backend:/app
+    environment:
+      DATABASE_URL: postgres://postgres:istorija8@db:5432/oglasi
+    command: npm run seed
+
+volumes:
+  postgres_data:
