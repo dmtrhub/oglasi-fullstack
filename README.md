@@ -1,101 +1,85 @@
 # Oglasi Fullstack Aplikacija
 
-![Pregled aplikacije](docs/preview.png)
-![Login forma](docs/login.png)
-![Register forma](docs/register.png)
-![Oglasi korisnika](docs/user-ads.png)
-![Detalji oglasa](docs/ad-details.png)
+![App preview](docs/preview.png)
+![Login form](docs/login.png)
+![Register form](docs/register.png)
+![User ads](docs/user-ads.png)
+![Ad details](docs/ad-details.png)
 ![Swagger API](docs/swagger-endpoints.png)
 ![Swagger Schemas](docs/swagger-schemas.png)
 
-Ovo je fullstack aplikacija za oglašavanje sa korisničkim nalozima. Projekat koristi:
+This is a fullstack advertising application with user accounts.
+The project uses:
 
-- **NestJS** za backend (Node.js + TypeORM)
-- **Next.js** za frontend (React)
-- **PostgreSQL 17** za bazu podataka
-- **Docker Compose** za jednostavno pokretanje
+- **NestJS** for backend (Node.js + TypeORM)
+- **Next.js** for frontend (React)
+- **PostgreSQL 18** for database
+- **Docker Compose** for easy deployment
 
----
-
-## Potrebni alati
+## Requirements
 
 - [Docker](https://www.docker.com/products/docker-desktop)
 - [Git](https://git-scm.com/)
 
----
+## Getting Started
 
-## Pokretanje projekta
-
-1. **Kloniraj repozitorijum:**
+1. **Clone the repository:**
 
 ```bash
 git clone https://github.com/dmtrhub/oglasi-fullstack.git
 cd oglasi-fullstack
 ```
 
-2. **Kopiraj .env.example u .env:**
+2. **Copy .env file to root:**
 
 ```bash
-cp backend/.env.example backend/.env
+cp .env.example .env
 ```
 
-3. **Pokreni sve servise:**
+3. **Start all services:**
 
 ```bash
 docker-compose up -d
 ```
 
-4. **Napuni bazu podacima (Seed):** // Svaki put briše stare i dodaje novih 100 oglasa + 10 korisnika
+The database will be seeded automatically on first run.
+
+4. **Open in browser:**
+
+- Frontend (Next.js): http://localhost:3001
+- Backend (Swagger API): http://localhost:3000/api
+
+## Test Users
+
+All test users have the same password: **password123**
+
+## Stopping Services
 
 ```bash
-docker-compose run seed
+docker-compose down
 ```
 
-5. **Otvorite u browseru:**
+## Project Structure
 
-Frontend (Next.js): http://localhost:3001
-
-Backend (Swagger): http://localhost:3000/api  // Kompletna swagger dokumentacija
-
----
-
-## Prijava korisnika
-
-**Svi test korisnici imaju istu test lozinku: password123**
-
----
-
-## Zaustavljanje kontejnera
-
-```bash
-docker-compose down -d
 ```
-
----
-
-## Potpuno brisanje starih podataka (volumes i images)
-
-```bash
-docker system prune -a
-docker volume rm oglasi-fullstack_postgres_data
-```
-
----
-
-## Struktura projekta
-
 oglasi-fullstack/
-│
-├── backend/           # NestJS backend
+├── backend/                 # NestJS backend
 │   ├── src/
-│   ├── .env.example
+│   │   ├── modules/        # Feature modules
+│   │   ├── common/         # Guards, strategies
+│   │   ├── seeds/          # Database seeding
+│   │   └── main.ts
+│   ├── .env
+│   ├── package.json
 │   └── Dockerfile
-│
-├── frontend/          # Next.js frontend
-│   ├── pages/
+├── frontend/                # Next.js frontend
+│   ├── src/
+│   │   ├── app/            # Pages and layouts
+│   │   ├── components/     # React components
+│   │   └── lib/            # Utilities and API client
+│   ├── package.json
 │   └── Dockerfile
-│
-├── docker-compose.yml # Definicija svih servisa
-├── README.md          # Ovaj fajl
-└── .gitignore
+├── docker-compose.yml
+└── README.md
+```
 
